@@ -1,9 +1,15 @@
 import boto3
 import json
 import time
-# Replace with your SQS queue name and DynamoDB table name
-queue_name = 'https://sqs.ap-south-1.amazonaws.com/028093479336/DemoQueue'
-table_name = 'cpumetrics'
+# Create a SSM client
+ssm_client = boto3.client('ssm',region_name='ap-south-1')
+parameter_name1 = 'dynamodbtablename'
+parameter_name2 = 'sqsurl'
+dynamodbtablename_response = ssm_client.get_parameter(Name=parameter_name1,WithDecryption=False)  # Decrypt if parameter is encrypted
+sqsurl_response = ssm_client.get_parameter(Name=parameter_name2,WithDecryption=False)  # Decrypt if parameter is encrypted
+# Replace with your DynamoDB queue URL
+queue_name = sqsurl_response['Parameter']['Value']
+table_name = dynamodbtablename_response['Parameter']['Value']
 # Create SQS and DynamoDB clients
 sqs = boto3.client('sqs',region_name='ap-south-1')
 dynamodb = boto3.client('dynamodb',region_name='ap-south-1')
