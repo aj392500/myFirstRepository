@@ -24,4 +24,4 @@ while True:
        print(f"Message sent to SQS: {message_body}")
    except Exception as e:
        print(f"Error sending message: {e}")
-   time.sleep(60)  # Send data every 60 seconds
+   time.sleep(1)  # Send data every 1 second
