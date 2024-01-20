@@ -1,0 +1,28 @@
+import boto3
+# Create clients for SQS and DynamoDB
+sqs_client = boto3.client('sqs')
+dynamodb_client = boto3.client('dynamodb')
+# Specify the SQS queue URL and DynamoDB table name
+sqs_queue_url = 'your-sqs-queue-url'
+dynamodb_table_name = 'your-dynamodb-table-name'
+def lambda_handler(event, context):
+   for record in event['Records']:
+       # Extract variables from SQS message body
+       message_body = record['body']
+       try:
+           cpu_utilization, timestamp = message_body.split(',')
+       except ValueError:
+           print("Invalid message format:", message_body)
+           continue
+       # Write data to DynamoDB
+       dynamodb_client.put_item(
+           TableName=dynamodb_table_name,
+           Item={
+               'Timestamp': {'S': timestamp},  # S for string data type
+               'CPUUtilization': {'N': cpu_utilization}  # N for number data type
+           }
+       )
+   return {
+       'statusCode': 200,
+       'body': 'Data processed successfully'
+   }
