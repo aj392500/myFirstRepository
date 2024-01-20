@@ -10,7 +10,7 @@ def lambda_handler(event, context):
        # Extract variables from SQS message body
        message_body = record['body']
        try:
-           cpu_utilization, timestamp = message_body.split(',')
+           cpu_usage, timestamp = message_body.split(',')
        except ValueError:
            print("Invalid message format:", message_body)
            continue
@@ -18,8 +18,8 @@ def lambda_handler(event, context):
        dynamodb_client.put_item(
            TableName=dynamodb_table_name,
            Item={
-               'Timestamp': {'S': timestamp},  # S for string data type
-               'CPUUtilization': {'N': cpu_utilization}  # N for number data type
+               'Timestamp': {'S': str(timestamp)},  # S for string data type
+               'CPUUtilization': {'N': str(cpu_usage)}  # N for number data type
            }
        )
    return {
