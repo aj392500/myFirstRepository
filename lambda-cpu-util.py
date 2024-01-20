@@ -5,7 +5,7 @@ import boto3
 # Create a SSM client
 ssm_client = boto3.client('ssm')
 parameter_name ='arn:aws:ssm:ap-south-1:028093479336:parameter/sqsurl'
- response = ssm_client.get_parameter(Name=parameter_name,WithDecryption=False)  # Decrypt if parameter is encrypted
+ response = ssm_client.get_parameter(Name='parameter_name',WithDecryption=False)  # Decrypt if parameter is encrypted
 # Replace with your SQS queue URL
 queue_url = response['Parameter']['Value']
 # Create an SQS client
