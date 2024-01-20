@@ -1,10 +1,10 @@
 import boto3
 # Create clients for SQS and DynamoDB
-sqs_client = boto3.client('sqs')
-dynamodb_client = boto3.client('dynamodb')
+sqs_client = boto3.client('sqs',region_name='ap-south-1')
+dynamodb_client = boto3.client('dynamodb',region_name='ap-south-1')
 # Specify the SQS queue URL and DynamoDB table name
-sqs_queue_url = 'your-sqs-queue-url'
-dynamodb_table_name = 'your-dynamodb-table-name'
+sqs_queue_url = 'https://sqs.ap-south-1.amazonaws.com/028093479336/DemoQueue'
+dynamodb_table_name = 'cpumetrics'
 def lambda_handler(event, context):
    for record in event['Records']:
        # Extract variables from SQS message body
